@@ -124,7 +124,9 @@ async function sendAudioToServer(audioBlob) {
     if (question) {
         formData.append("question", question);
     }
-    
+    if (billInput.files.length > 0) {
+        formData.append("bill", billInput.files[0]);
+    }
     try {
         const response = await fetch("/que", {
             method: 'POST',
@@ -146,6 +148,7 @@ async function sendAudioToServer(audioBlob) {
         addDataItem(`❌ Network Error: ${error.message}`, "error");
     } finally {
         dataInput.value = "";
+        billInput.value = "";
         updateEnterButtonState();
     }
 }
@@ -163,7 +166,9 @@ function submitData() {
     if (question) {
         addDataItem(question, "user");
     }
-    
+    if (billInput.files.length > 0) {
+        addDataItem("📷 Image uploaded for analysis", "system");
+    }
     addDataItem("⏳ Processing your request...", "system");
 
     const formData = new FormData();
@@ -185,7 +190,8 @@ function submitData() {
         return response.json();
     })
     .then(data => {
-        dataItems = dataItems.filter(item => item.content !== "⏳ Processing your request...");
+        dataItems = dataItems.filter(item => item.content !== "⏳ Processing your request..."&&
+            item.content !== "📷 Image uploaded for analysis");
         if (data.success) {
             addDataItem(data.answer, "gemini");
         } else {
@@ -193,7 +199,8 @@ function submitData() {
         }
     })
     .catch(error => {
-        dataItems = dataItems.filter(item => item.content !== "⏳ Processing your request...");
+        dataItems = dataItems.filter(item => item.content !== "⏳ Processing your request..."&&
+            item.content !== "📷 Image uploaded for analysis");
         addDataItem(`❌ Network Error: ${error.message}`, "error");
     })
     .finally(() => {
@@ -400,8 +407,14 @@ function updateDisplay() {
 }
 
 function clearAllData() {
+    if (isRecording) {
+        stopRecording();
+    }
     if (dataItems.length > 0) {
         dataItems = [];
+        dataInput.value = "";
+        billInput.value = "";
+        updateEnterButtonState();
         updateDisplay();
         showNotification("All data cleared");
     }
