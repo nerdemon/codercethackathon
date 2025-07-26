@@ -26,7 +26,8 @@ body {
 
 .content-card {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1200px;         /* Increased from 1000px */
+  height: 600px;             /* Increased from 400px */
   background: linear-gradient(135deg, rgba(60, 60, 60, 0.2) 0%, rgba(80, 80, 80, 0.1) 100%);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -34,18 +35,15 @@ body {
   border: 1px solid rgba(200, 200, 200, 0.08);
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
-  min-height: 400px; /* Optional: set a minimum height */
-  display: flex;
-  flex-direction: column;
 }
 
 .display-area {
   width: 100%;
-  min-height: 500px; /* You can keep or adjust this */
-  padding: 32px;
+  height: 100%;
+  min-height: 500px;         /* Added for more vertical space */
+  padding: 32px;             /* Increased from 24px */
   display: flex;
   flex-direction: column;
-  flex: 1 1 auto; /* Allow it to grow/shrink */
 }
 
 .display-header {
@@ -340,15 +338,8 @@ body {
   }
 
   .content-card {
+    height: 300px;
     border-radius: 20px;
-    min-width: 0;
-    width: 100%;
-  }
-
-  .display-area {
-    min-width: 0;
-    width: 100%;
-    padding: 16px;
   }
 
   .input-container {
